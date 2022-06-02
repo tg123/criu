@@ -1292,6 +1292,13 @@ static int check_path_remap(struct fd_link *link, const struct fd_parms *parms, 
 		return 0;
 	}
 
+	if (strncmp("./dev/shm", rpath, strlen("./dev/shm")) == 0) {
+		pr_info("ghost dev shm %s", rpath);
+		link_strip_deleted(link);
+		return dump_ghost_remap(rpath + 1, ost, lfd, id, nsid);
+	}
+
+
 	if (ost->st_nlink == 0) {
 		/*
 		 * Unpleasant, but easy case. File is completely invisible
